@@ -17,6 +17,10 @@ gem 'responders'
 group :development, :test do
   gem 'pry'
   gem 'capybara'
+  gem 'simplecov'
+  gem 'launchy'
+  gem 'database_cleaner'
+  gem 'minitest-emoji'
 end
 
 group :production do
