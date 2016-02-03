@@ -2,13 +2,16 @@ $(document).ready(function(){
   fetchIdeas();
   createIdea();
   deleteIdea();
+  editIdea();
 })
 
 function renderIdea(idea){
   $('#idea-column').append(
     "<div class='ui centered card idea' data-id='"
       + idea.id
-      + "'><div class='content'><button class='ui right floated mini black button' id='delete-idea'>Delete</button><div class='header'>"
+      + "'><div class='content'><button class='ui right floated mini black button' id='delete-idea'>Delete</button>"
+      + "<button class='ui right floated mini black button' id='edit-idea'>Edit</button>"
+      + "<div class='header'>"
       + idea.title
       + "</div><div class='meta'>"
       + idea.quality
@@ -80,5 +83,12 @@ function deleteIdea() {
         console.log(xhr.responseText)
       }
     })
+  })
+}
+
+function editIdea() {
+  $('#idea-column').delegate('#edit-idea', 'click', function() {
+    var $idea = $(this).closest('.idea')
+
   })
 }
