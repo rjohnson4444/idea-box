@@ -12,10 +12,15 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'active_model_serializers'
+gem 'responders'
 
 group :development, :test do
   gem 'pry'
   gem 'capybara'
+  gem 'simplecov'
+  gem 'launchy'
+  gem 'database_cleaner'
+  gem 'minitest-emoji'
 end
 
 group :production do
