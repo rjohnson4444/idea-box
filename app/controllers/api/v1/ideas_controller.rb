@@ -6,7 +6,13 @@ class Api::V1::IdeasController < ApplicationController
   end
 
   def create
-    respond_with Idea.create(idea_params)
+    idea = Idea.new(idea_params)
+
+    if idea.save
+      respond_with idea, location: api_v1_ideas_path(idea)
+    else
+      render json: item.errors, status: 422
+    end
   end
 
   def update
@@ -18,7 +24,6 @@ class Api::V1::IdeasController < ApplicationController
   end
 
   private
-
     def idea_params
       params.require(:idea).permit(:title, :body, :quality)
     end
