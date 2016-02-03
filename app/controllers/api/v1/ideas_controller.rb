@@ -2,7 +2,7 @@ class Api::V1::IdeasController < ApplicationController
   respond_to :json, :xml
 
   def index
-    respond_with Idea.all_ideas
+    respond_with Idea.all_ideas, serializer: nil
   end
 
   def create
