@@ -87,8 +87,4 @@ function deleteIdea() {
 }
 
 function editIdea() {
-  $('#idea-column').delegate('#edit-idea', 'click', function() {
-    var $idea = $(this).closest('.idea')
-
-  })
 }

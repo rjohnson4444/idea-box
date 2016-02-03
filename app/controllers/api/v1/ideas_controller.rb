@@ -15,7 +15,6 @@ class Api::V1::IdeasController < ApplicationController
   end
 
   def update
-    binding.pry
     respond_with Idea.update(params[:id], idea_params), serializer: nil
   end
 
