@@ -7,7 +7,6 @@ class Api::V1::IdeasController < ApplicationController
 
   def create
     idea = Idea.new(idea_params)
-
     if idea.save
       respond_with idea, location: api_v1_ideas_path(idea)
     else
