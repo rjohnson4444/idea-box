@@ -3,7 +3,7 @@ $(document).ready(function(){
   createIdea();
   deleteIdea();
   ['title', 'body'].forEach(editEvents)
-
+  searchIdeas();
 })
 
 function renderIdea(idea){
@@ -110,5 +110,21 @@ function editEvents(key) {
         }
       })
     }
+  })
+}
+
+function searchIdeas(){
+  $('#search-ideas').keyup(function(event){
+    // debugger
+    var search = $(this).val().toLowerCase();
+    var ideas = $('#idea-column').children();
+    ideas.show();
+
+    var hide = ideas.filter(function(){
+      var all = $(this).children().text().toLowerCase();
+      return !(all.includes(search));
+    })
+
+    hide.hide();
   })
 }
