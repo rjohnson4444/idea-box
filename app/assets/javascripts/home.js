@@ -120,11 +120,11 @@ function searchIdeas(){
     var ideas = $('#idea-column').children();
     ideas.show();
 
-    var hide = ideas.filter(function(){
+    var ideasToHide = ideas.filter(function(){
       var all = $(this).children().text().toLowerCase();
       return !(all.includes(search));
     })
 
-    hide.hide();
+    ideasToHide.hide();
   })
 }
