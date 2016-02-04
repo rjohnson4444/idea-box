@@ -4,6 +4,7 @@ $(document).ready(function(){
   deleteIdea();
   ['title', 'body'].forEach(editEvents)
   searchIdeas();
+  increaseQuality();
 })
 
 function renderIdea(idea){
@@ -13,7 +14,9 @@ function renderIdea(idea){
       + "'><div class='content'><button class='ui right floated mini black button' id='delete-idea'>Delete</button>"
       + "<div contenteditable='true' class='header edit-idea-title'>"
       + idea.title
-      + "</div><div class='meta'>"
+      + "</div><div class='meta quality' quality="
+      + idea.quality
+      + ">"
       + idea.quality
       + "</div><div contenteditable='true' class='description edit-idea-body'>"
       + idea.body
@@ -72,7 +75,7 @@ function createIdea() {
 function deleteIdea() {
   $('#idea-column').delegate('#delete-idea', 'click', function() {
     var $idea = $(this).closest('.idea')
-    console.log($idea)
+
     $.ajax({
       type:    'DELETE',
       url:     '/api/v1/ideas/' + $idea.attr('data-id') + '.json',
@@ -115,7 +118,6 @@ function editEvents(key) {
 
 function searchIdeas(){
   $('#search-ideas').keyup(function(event){
-    // debugger
     var search = $(this).val().toLowerCase();
     var ideas = $('#idea-column').children();
     ideas.show();
@@ -127,4 +129,51 @@ function searchIdeas(){
 
     hide.hide();
   })
+}
+
+var qualityWords = ['Swill', 'Plausible', 'Genius']
+
+var qualityIndexToWords = {
+  0: "Swill",
+  1: "Plausible",
+  2: "Genius"
+}
+
+function increaseQuality(){
+  $('body').delegate('.green.button', 'click', function(){
+    var $idea    = $(this).closest('.idea')
+    var ideaId   = $idea.attr('data-id')
+    var currentQualityName = $idea.find('.quality').text()
+    debugger
+    var data = { idea: { quality: incrementQualtiyUp(qualityWords, currentQualityName) } }
+    var updatedQualityIndex = data.idea.quality
+
+    $.ajax({
+      type: 'PATCH',
+      url:  '/api/v1/ideas/' + ideaId,
+      data: data,
+      success: function(){
+        updatedQuality($idea, updatedQualityIndex)
+      },
+      error: function(xhr){
+        console.log(xhr.responseText)
+      }
+    })
+  })
+}
+
+function updatedQuality(idea, index){
+  var quality = qualityIndexToWords[index]
+  return $(idea).find('.quality').text(quality);
+}
+
+var incrementQualtiyUp = function(qualityWords, currentQuality){
+
+  if (currentQuality === 'Genius') {
+    alert("You cannot increase the quality anymore!")
+  } else {
+    var currentQualityIndex = qualityWords.indexOf(currentQuality)
+    var newQualityIndex = currentQualityIndex +=1
+  }
+  return newQualityIndex
 }
