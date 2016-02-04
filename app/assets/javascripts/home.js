@@ -5,6 +5,7 @@ $(document).ready(function(){
   ['title', 'body'].forEach(editEvents)
   searchIdeas();
   increaseQuality();
+  decreaseQuality();
 })
 
 function renderIdea(idea){
@@ -47,6 +48,8 @@ function fetchIdeas() {
   })
 }
 
+// Create Idea
+
 function createIdea() {
   $('#create-idea').on('click', function(){
     var ideaParams = {
@@ -72,6 +75,8 @@ function createIdea() {
   })
 }
 
+// Delete Idea
+
 function deleteIdea() {
   $('#idea-column').delegate('#delete-idea', 'click', function() {
     var $idea = $(this).closest('.idea')
@@ -88,6 +93,8 @@ function deleteIdea() {
     })
   })
 }
+
+//Inline Editing
 
 function editEvents(key) {
   $('body').delegate('.edit-idea-' + key, 'keydown', function(event) {
@@ -116,6 +123,8 @@ function editEvents(key) {
   })
 }
 
+//Search
+
 function searchIdeas(){
   $('#search-ideas').keyup(function(event){
     var search = $(this).val().toLowerCase();
@@ -131,6 +140,7 @@ function searchIdeas(){
   })
 }
 
+// Quality
 var qualityWords = ['Swill', 'Plausible', 'Genius']
 
 var qualityIndexToWords = {
@@ -162,6 +172,29 @@ function increaseQuality(){
   })
 }
 
+function decreaseQuality(){
+  $('body').delegate('.red.button', 'click', function(){
+    var $idea    = $(this).closest('.idea')
+    var ideaId   = $idea.attr('data-id')
+    var currentQualityName = $idea.find('.quality').text()
+    debugger
+    var data = { idea: { quality: decreaseQualtiyUp(qualityWords, currentQualityName) } }
+    var updatedQualityIndex = data.idea.quality
+
+    $.ajax({
+      type: 'PATCH',
+      url:  '/api/v1/ideas/' + ideaId,
+      data: data,
+      success: function(){
+        updatedQuality($idea, updatedQualityIndex)
+      },
+      error: function(xhr){
+        console.log(xhr.responseText)
+      }
+    })
+  })
+}
+
 function updatedQuality(idea, index){
   var quality = qualityIndexToWords[index]
   return $(idea).find('.quality').text(quality);
@@ -174,6 +207,17 @@ var incrementQualtiyUp = function(qualityWords, currentQuality){
   } else {
     var currentQualityIndex = qualityWords.indexOf(currentQuality)
     var newQualityIndex = currentQualityIndex +=1
+  }
+  return newQualityIndex
+}
+
+var decreaseQualtiyUp = function(qualityWords, currentQuality){
+
+  if (currentQuality === 'Swill') {
+    alert("You cannot decrease the quality anymore!")
+  } else {
+    var currentQualityIndex = qualityWords.indexOf(currentQuality)
+    var newQualityIndex = currentQualityIndex -=1
   }
   return newQualityIndex
 }
