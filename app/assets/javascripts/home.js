@@ -2,17 +2,20 @@ $(document).ready(function(){
   fetchIdeas();
   createIdea();
   deleteIdea();
+  ['title', 'body'].forEach(editEvents)
+
 })
 
 function renderIdea(idea){
   $('#idea-column').append(
     "<div class='ui centered card idea' data-id='"
       + idea.id
-      + "'><div class='content'><button class='ui right floated mini black button' id='delete-idea'>Delete</button><div class='header'>"
+      + "'><div class='content'><button class='ui right floated mini black button' id='delete-idea'>Delete</button>"
+      + "<div contenteditable='true' class='header edit-idea-title'>"
       + idea.title
       + "</div><div class='meta'>"
       + idea.quality
-      + "</div><div class='description'>"
+      + "</div><div contenteditable='true' class='description edit-idea-body'>"
       + idea.body
       + "</div></div><div class='extra content'>"
       + "<div class='ui two buttons'>"
@@ -80,5 +83,32 @@ function deleteIdea() {
         console.log(xhr.responseText)
       }
     })
+  })
+}
+
+function editEvents(key) {
+  $('body').delegate('.edit-idea-' + key, 'keydown', function(event) {
+    var enterKey = event.which == 13
+
+    var data = { idea: {} }
+    data.idea[key] = this.textContent
+
+    if (enterKey) {
+      var idea = this.closest('.idea')
+      var ideaId = $(idea).attr('data-id')
+
+      event.preventDefault();
+      this.blur();
+
+      $.ajax({
+        type: 'PUT',
+        url:  '/api/v1/ideas/' + ideaId,
+        data: data,
+        success: function(){},
+        error: function(xhr){
+          console.log(xhr.responseText)
+        }
+      })
+    }
   })
 }

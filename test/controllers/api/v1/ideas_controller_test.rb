@@ -42,19 +42,9 @@ class Api::V1::IdeasControllerTest < ActionController::TestCase
   end
 
   test "#update replaces properties of current idea" do
-    skip
-    prev_idea = Idea.first
-    idea      = { title: "Update Idea", body: "Update Idea body", quality: 'genius' }
+    put :update, id: prev_idea.id, idea: { title: "Update Idea" }, format: :json
 
-    get :index, format: :json
-
-    assert_equal prev_idea.title, json_response['ideas'].last['title']
-    assert_equal prev_idea.body, json_response['ideas'].last['body']
-    assert_equal prev_idea.quality, json_response['ideas'].last['quality']
-
-    put :update, id: prev_idea.id, idea: idea, format: :json
-
-    assert_equal prev_idea.title, json_response
+    assert_equal "Update Idea", Idea.first.title
   end
 
   test "#destroy deletes an idea" do
