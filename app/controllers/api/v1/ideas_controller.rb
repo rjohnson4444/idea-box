@@ -7,6 +7,7 @@ class Api::V1::IdeasController < ApplicationController
 
   def create
     idea = Idea.new(idea_params)
+
     if idea.save
       respond_with idea, location: api_v1_ideas_path(idea)
     else
@@ -24,6 +25,7 @@ class Api::V1::IdeasController < ApplicationController
 
   private
     def idea_params
+      params[:idea][:quality] = params[:idea][:quality].to_i
       params.require(:idea).permit(:title, :body, :quality)
     end
 end
