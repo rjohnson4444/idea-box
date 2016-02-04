@@ -55,7 +55,7 @@ function createIdea() {
     var ideaParams = {
       idea: {
         title: $('#idea-title').val(),
-        body:  $('#idea-body').val()
+        body:  truncate($('#idea-body').val())
       }
     }
 
@@ -73,6 +73,15 @@ function createIdea() {
       }
     })
   })
+}
+
+function truncate (string){
+  debugger
+  if (string.length > 100){
+    return $.trim(string).substring(0, 100).split(" ").slice(0, -1).join(" ") + "...";
+  } else {
+    return string;
+  }
 }
 
 // Delete Idea
