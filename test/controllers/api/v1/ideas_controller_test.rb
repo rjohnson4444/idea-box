@@ -42,7 +42,7 @@ class Api::V1::IdeasControllerTest < ActionController::TestCase
   end
 
   test "#update replaces properties of current idea" do
-    put :update, id: prev_idea.id, idea: { title: "Update Idea" }, format: :json
+    put :update, id: Idea.first.id, idea: { title: "Update Idea" }, format: :json
 
     assert_equal "Update Idea", Idea.first.title
   end
