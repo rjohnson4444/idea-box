@@ -2,7 +2,7 @@ $(document).ready(function(){
   fetchIdeas();
   createIdea();
   deleteIdea();
-  ['title', 'body'].forEach(editEvents)
+  editIdeas();
   searchIdeas();
   increaseQuality();
   decreaseQuality();
@@ -27,6 +27,10 @@ function renderIdea(idea){
       + "<div class='ui basic red button'><i class='thumbs outline down icon'></div>"
       + "</div></div></div>"
   )
+}
+
+function editIdeas() {
+  ['title', 'body'].forEach(editEvents)
 }
 
 function fetchIdeas() {
@@ -76,12 +80,11 @@ function createIdea() {
 }
 
 function truncate (string){
-  debugger
   if (string.length > 100){
     return $.trim(string).substring(0, 100).split(" ").slice(0, -1).join(" ") + "...";
-  } else {
-    return string;
   }
+
+  return string;
 }
 
 // Delete Idea
@@ -163,7 +166,6 @@ function increaseQuality(){
     var $idea    = $(this).closest('.idea')
     var ideaId   = $idea.attr('data-id')
     var currentQualityName = $idea.find('.quality').text()
-    debugger
     var data = { idea: { quality: incrementQualtiyUp(qualityWords, currentQualityName) } }
     var updatedQualityIndex = data.idea.quality
 
@@ -186,7 +188,6 @@ function decreaseQuality(){
     var $idea    = $(this).closest('.idea')
     var ideaId   = $idea.attr('data-id')
     var currentQualityName = $idea.find('.quality').text()
-    debugger
     var data = { idea: { quality: decreaseQualtiyUp(qualityWords, currentQualityName) } }
     var updatedQualityIndex = data.idea.quality
 
@@ -209,7 +210,7 @@ function updatedQuality(idea, index){
   return $(idea).find('.quality').text(quality);
 }
 
-var incrementQualtiyUp = function(qualityWords, currentQuality){
+function incrementQualtiyUp(qualityWords, currentQuality){
 
   if (currentQuality === 'Genius') {
     alert("You cannot increase the quality anymore!")
@@ -220,7 +221,7 @@ var incrementQualtiyUp = function(qualityWords, currentQuality){
   return newQualityIndex
 }
 
-var decreaseQualtiyUp = function(qualityWords, currentQuality){
+function decreaseQualtiyUp(qualityWords, currentQuality){
 
   if (currentQuality === 'Swill') {
     alert("You cannot decrease the quality anymore!")
