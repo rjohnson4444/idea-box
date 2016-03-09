@@ -1,3 +1,0 @@
-== IdeaBox
-
-A SPA uisng Rails
